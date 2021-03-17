@@ -3,7 +3,7 @@
 :root {
     --bg: #eae7dc;
     --border: #8e8d8a;
-    --primary: #e85a4f
+    --primary: #e85a4f;
 }
 
 * {
@@ -41,6 +41,7 @@ main {
     display: grid;
     grid-template-columns: repeat(3, 120px);
     grid-template-rows: repeat(3, 120px);
+    font-weight: bold;
 }
 
 .square {
@@ -88,4 +89,46 @@ main {
 .bot-right {
     border-bottom: none;
     border-right: none;
+}
+
+.selection-screen {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg);
+    color: var(--primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    user-select: none;
+}
+
+.selection-screen * {
+    margin: 20px 0;
+}
+
+.selection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--bg);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    width: 120px;
+    height: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.selection:hover {
+    background-color: var(--primary);
+    color: var(--bg);
+}
+
+.selection:active {
+    background-color: var(--bg);
+    color: var(--primary);
 }
