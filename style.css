@@ -38,6 +38,29 @@ main {
     user-select: none;
 }
 
+.restart {
+    border: 1px solid var(--primary);
+    margin: 60px;
+    height: 40px;
+    width: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restart:hover {
+    background-color: var(--primary);
+    color: var(--bg);
+}
+
+.restart:active {
+    background-color: var(--bg);
+    color: var(--primary);
+    cursor: default;
+}
+
 .board {
     display: grid;
     grid-template-columns: repeat(3, 120px);
@@ -137,4 +160,5 @@ main {
 .selection:active {
     background-color: var(--bg);
     color: var(--primary);
+    cursor: default;
 }
