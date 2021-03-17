@@ -1,5 +1,5 @@
 const gameBoard = (function() {
-    const board = ["", "", "", "", "", "", "", "", ""];
+    let board = ["", "", "", "", "", "", "", "", ""];
     const squares = document.querySelectorAll(".square");
     const player1 = playerFactory("Player 1", "X", "human");
     function fillBoard() {
@@ -19,17 +19,27 @@ const gameBoard = (function() {
         })
     }
 
+    function resetBoard() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        fillBoard();
+    }
+
     return {
         fillBoard,
         updateBoard,
+        resetBoard,
         board,
     }
 })()
 
 const displayController = (function() {
     let againstHuman;
-    gameBoard.fillBoard()
-    gameBoard.updateBoard()
+    gameBoard.fillBoard();
+    gameBoard.updateBoard();
+
+    //the board array gets resetted when clicked
+    const restart = document.querySelector(".restart");
+    restart.addEventListener("click", gameBoard.resetBoard)
 })()
 
 function playerFactory(player, mark, type) {
