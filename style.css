@@ -125,7 +125,7 @@ main {
     width: 100%;
     background-color: var(--bg);
     color: var(--primary);
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;

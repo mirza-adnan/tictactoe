@@ -1,51 +1,44 @@
-const gameBoard = (function() {
-    let board = ["", "", "", "", "", "", "", "", ""];
-    const squares = document.querySelectorAll(".square");
-    const player1 = playerFactory("Player 1", "X", "human");
-    function fillBoard() {
-        for (let i=0; i<9; i++) {
-            squares[i].textContent = board[i];
+const SelectionScreen = (function() {
+    
+    const playerFactory = function(player, mark, isAi) {
+        return {
+            player,
+            mark,
+            isAi
         }
     }
 
-    function updateBoard() {
-        squares.forEach(square => {
-            square.addEventListener("click", function() {
-                const index = Number(square.getAttribute("data-index"));
-                board[index] = player1.mark;
-                square.style.color = "rgba(232, 90, 79, 1)";
-                fillBoard()
-            })
+    // creating the players
+    const player1 = playerFactory("Player 1", "X", false);
+    const player2 = playerFactory("Player 2", "O", false);
+    
+    const human = document.querySelector(".human");
+    const computer = document.querySelector(".computer");
+
+    human.addEventListener("click", closeSelectionScreen);
+    computer.addEventListener("click", function() {
+        player2.isAi = true;
+        closeSelectionScreen();
+    })
+
+
+    function closeSelectionScreen() {
+        const selectionScreen = document.querySelector(".selection-screen");
+
+        selectionScreen.addEventListener("transitionend", function() {
+            selectionScreen.style.display = "none";
         })
+
+        selectionScreen.style.opacity = "0";
     }
 
-    function resetBoard() {
-        board = ["", "", "", "", "", "", "", "", ""];
-        fillBoard();
-    }
-
-    return {
-        fillBoard,
-        updateBoard,
-        resetBoard,
-        board,
-    }
 })()
 
-const displayController = (function() {
-    let againstHuman;
-    gameBoard.fillBoard();
-    gameBoard.updateBoard();
+const Gameboard = (function() {
+    let board = ["", "", "", "", "", "", "", "", ""];
+})();
 
-    //the board array gets resetted when clicked
-    const restart = document.querySelector(".restart");
-    restart.addEventListener("click", gameBoard.resetBoard)
+const Controller = (function() {
+
 })()
 
-function playerFactory(player, mark, type) {
-    return {
-        player,
-        mark,
-        type,
-    }
-}
