@@ -1,18 +1,19 @@
 const SelectionScreen = (function() {
     
-    const playerFactory = function(player, mark, isAi, turn) {
+    const playerFactory = function(player, mark, isAi, turn, won) {
         return {
             player,
             mark,
             isAi,
-            turn
+            turn,
+            won
         }
     }
 
     // creating the players
-    const player1 = playerFactory("Player 1", "X", false, true);
-    const player2 = playerFactory("Player 2", "O", false, false);
-    
+    const player1 = playerFactory("Player 1", "X", false, true, false);
+    const player2 = playerFactory("Player 2", "O", false, false, false);
+
     // closing the selection screen after choosing opponent
     const human = document.querySelector(".human");
     const computer = document.querySelector(".computer");
@@ -30,7 +31,7 @@ const SelectionScreen = (function() {
             selectionScreen.style.display = "none";
         })
         selectionScreen.style.opacity = "0";
-
+    
         const container = document.querySelector(".container");
         container.style.display = "flex";
     }
@@ -48,9 +49,12 @@ const Gameboard = (function() {
     
     const squares = document.querySelectorAll(".square");
 
-    squares.forEach(square => {
-        square.addEventListener("click", updateBoard);
-    })
+    function addListeners() {
+        squares.forEach(square => {
+            square.addEventListener("click", updateBoard);
+        })
+    }
+    
 
     function renderBoard() {
         for(let i=0; i<9; i++) {
@@ -68,7 +72,10 @@ const Gameboard = (function() {
         }
         renderBoard();
         changeOpacity(this);
-        changeTurns()
+        removeListener(this);
+        changeTurns();
+        determineWinner();
+        declareWinner();
     }
 
     // toggles the turn of each player
@@ -81,9 +88,39 @@ const Gameboard = (function() {
         element.style.color = "rgba(232, 90, 79, 1)"  // increasing the alpha value from 0 to 1 to make it appear slowly
     }
 
+    function determineWinner() {
+        const winCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+        
+        for (let i=0; i < winCombinations.length; i++) {
+            if (board[winCombinations[i][0]] === "X" && board[winCombinations[i][1]] === "X" && board[winCombinations[i][2]] === "X") {
+                SelectionScreen.player1.won = true;
+            }
+            if (board[winCombinations[i][0]] === "O" && board[winCombinations[i][1]] === "O" && board[winCombinations[i][2]] === "O") {
+                SelectionScreen.player2.won = true;
+            }
+        }
+    }
+
+    function declareWinner() {
+                if (SelectionScreen.player1.won) {
+                    setTimeout(function() {
+                        alert("Player 1 is the Winner")
+                    }, 400)
+                }
+                if (SelectionScreen.player2.won) {
+                    setTimeout(function() {
+                        alert("Player 2 is the Winner")
+                    }, 400)
+                }
+    }
+
+    function removeListener(element) {
+        element.removeEventListener("click", updateBoard);
+    } 
 
     return {
         renderBoard,
+        addListeners,
     }
 })();
 
@@ -92,3 +129,4 @@ const Controller = (function() {
 })()
 
 Gameboard.renderBoard();
+Gameboard.addListeners();
