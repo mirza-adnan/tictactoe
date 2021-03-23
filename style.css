@@ -13,10 +13,14 @@
 }
 
 body {
+    font-family: "Montserrat", sans-serif;
+}
+
+.container {
     height: 100vh;
     font-family: "Montserrat", sans-serif;
     font-size: 100%;
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     background-color: var(--bg);

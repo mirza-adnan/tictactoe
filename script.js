@@ -25,12 +25,14 @@ const SelectionScreen = (function() {
 
     function closeSelectionScreen() {
         const selectionScreen = document.querySelector(".selection-screen");
-
+        
         selectionScreen.addEventListener("transitionend", function() {
             selectionScreen.style.display = "none";
         })
-
         selectionScreen.style.opacity = "0";
+
+        const container = document.querySelector(".container");
+        container.style.display = "flex";
     }
 
     return {
