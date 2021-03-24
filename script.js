@@ -52,12 +52,12 @@ const Gameboard = (function() {
 
     function addListeners() {
         squares.forEach(square => {
-            square.addEventListener("click", updateBoard);
+            square.addEventListener("click", main);
         })
     }
     
     function removeListener(element) {
-        element.removeEventListener("click", updateBoard);
+        element.removeEventListener("click", main);
     }
 
     function renderBoard() {
@@ -66,20 +66,25 @@ const Gameboard = (function() {
         }
     }
 
-    function updateBoard() {
-        const index = Number(this.getAttribute("data-index"));
+    function updateBoardArray(element) {
+        const index = Number(element.getAttribute("data-index"));
         if (SelectionScreen.player1.turn) {
             board[index] = SelectionScreen.player1.mark;
         }
         if (SelectionScreen.player2.turn) {
             board[index] = SelectionScreen.player2.mark;
         }
+    }
+
+    function main() {
+        updateBoardArray(this)
         renderBoard();
         changeOpacity(this);
-        removeListener(this);
         changeTurns();
         checkWinner();
         declareResult();
+        aiGameplay();
+        removeListener(this);
     }
 
     // toggles the turn of each player
@@ -98,8 +103,7 @@ const Gameboard = (function() {
         for (let i=0; i < winCombinations.length; i++) {
             if (board[winCombinations[i][0]] === "X" && board[winCombinations[i][1]] === "X" && board[winCombinations[i][2]] === "X") {
                 SelectionScreen.player1.won = true;
-            }
-            if (board[winCombinations[i][0]] === "O" && board[winCombinations[i][1]] === "O" && board[winCombinations[i][2]] === "O") {
+            } else if (board[winCombinations[i][0]] === "O" && board[winCombinations[i][1]] === "O" && board[winCombinations[i][2]] === "O") {
                 SelectionScreen.player2.won = true;
             }
         }
@@ -133,6 +137,19 @@ const Gameboard = (function() {
     function resetBoard() {
         board = ["", "", "", "", "", "", "", "", ""];
         renderBoard();
+    }
+
+    function aiGameplay() {
+        if (SelectionScreen.player2.isAi && SelectionScreen.player2.turn) {
+            const emptySquares = Array.from(squares).filter(square => {
+                if (!square.textContent) return true;
+            })
+            const randomIndex = Math.floor(Math.random() * emptySquares.length);
+            setTimeout(function() {
+                emptySquares[randomIndex].click();
+            }, 300);
+
+        }
     }
 
     return {
