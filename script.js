@@ -17,9 +17,13 @@ const SelectionScreen = (function() {
     // closing the selection screen after choosing opponent
     const human = document.querySelector(".human");
     const computer = document.querySelector(".computer");
-
-    human.addEventListener("click", closeSelectionScreen);
+    const turnText = document.querySelector(".turn");
+    human.addEventListener("click", function() {
+        turnText.style.display = "block";
+        closeSelectionScreen()
+    });
     computer.addEventListener("click", function() {
+        turnText.style.display = "none";
         player2.player = "Computer";
         player2.isAi = true;
         closeSelectionScreen();
@@ -39,7 +43,8 @@ const SelectionScreen = (function() {
 
     return {
         player1,
-        player2
+        player2,
+        turnText
     }
 
 })()
@@ -70,9 +75,11 @@ const Gameboard = (function() {
         const index = Number(element.getAttribute("data-index"));
         if (SelectionScreen.player1.turn) {
             board[index] = SelectionScreen.player1.mark;
+            SelectionScreen.turnText.textContent = `It's ${SelectionScreen.player2.player}'s Turn`
         }
         if (SelectionScreen.player2.turn) {
             board[index] = SelectionScreen.player2.mark;
+            SelectionScreen.turnText.textContent = `It's ${SelectionScreen.player1.player}'s Turn`
         }
     }
 
@@ -155,10 +162,12 @@ const Gameboard = (function() {
     return {
         renderBoard,
         addListeners,
+        resetBoard,
     }
 })();
 
-const Controller = (function() {
+const DisplayController = (function() {
+
 })()
 
 Gameboard.renderBoard();
