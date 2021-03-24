@@ -214,3 +214,64 @@ main {
     color: var(--primary);
     cursor: default;
 }
+
+/* Media Queries */
+@media screen and (max-width:410px) {
+    .board {
+        grid-template-columns: repeat(3, 100px);
+        grid-template-rows: repeat(3, 100px);
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .board {
+        grid-template-columns: repeat(3, 90px);
+        grid-template-rows: repeat(3, 90px);
+    }
+}
+
+@media screen and (max-width: 280px) {
+    .board {
+        grid-template-columns: repeat(3, 80px);
+        grid-template-rows: repeat(3, 80px);
+    }
+}
+
+@media screen and (max-height: 700px) {
+    main {
+        margin-top: 70px;
+    }
+
+    .restart {
+        margin: 30px;
+    }
+}
+
+@media screen and (max-height: 650px) {
+    main {
+        margin-top: 60px;
+    }
+
+    .restart {
+        margin: 30px;
+    }
+
+    header {
+        text-align: center;
+        font-size: 18px;
+    }
+    
+    header h1 {
+        margin: 20px 0;
+    }
+}
+
+@media screen and (max-height: 550px) {
+    main {
+        margin-top: 40px;
+    }
+
+    .restart {
+        margin: 30px;
+    }
+}

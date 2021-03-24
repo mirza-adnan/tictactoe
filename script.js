@@ -29,9 +29,9 @@ const SelectionScreen = (function() {
         closeSelectionScreen();
     })
 
+    const selectionScreen = document.querySelector(".selection-screen");
+
     function closeSelectionScreen() {
-        const selectionScreen = document.querySelector(".selection-screen");
-        
         selectionScreen.addEventListener("transitionend", function() {
             selectionScreen.style.display = "none";
         })
@@ -44,7 +44,8 @@ const SelectionScreen = (function() {
     return {
         player1,
         player2,
-        turnText
+        turnText,
+        selectionScreen,
     }
 
 })()
@@ -150,13 +151,6 @@ const Gameboard = (function() {
         }, 350);
 
     }
-    
-    function resetBoard() {
-        board = ["", "", "", "", "", "", "", "", ""];
-        removeAllListeners();
-        addListeners();
-        renderBoard();
-    }
 
     function aiGameplay() {
         if (SelectionScreen.player2.isAi && SelectionScreen.player2.turn) {
@@ -169,6 +163,17 @@ const Gameboard = (function() {
             }, 300);
 
         }
+    }
+
+    function resetBoard() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        removeAllListeners();
+        addListeners();
+        renderBoard();
+    }
+
+    function newGame() {
+        
     }
 
     return {
