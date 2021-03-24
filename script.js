@@ -29,13 +29,17 @@ const SelectionScreen = (function() {
         closeSelectionScreen();
     })
 
-    const selectionScreen = document.querySelector(".selection-screen");
+    
 
     function closeSelectionScreen() {
-        selectionScreen.addEventListener("transitionend", function() {
-            selectionScreen.style.display = "none";
-        })
+        const selectionScreen = document.querySelector(".selection-screen");
+
         selectionScreen.style.opacity = "0";
+
+        selectionScreen.addEventListener("transitionend", function setDisplay() {
+            selectionScreen.style.display = "none";
+            selectionScreen.removeEventListener("transitionend", setDisplay);
+        });
     
         const container = document.querySelector(".container");
         container.style.display = "flex";
@@ -45,7 +49,6 @@ const SelectionScreen = (function() {
         player1,
         player2,
         turnText,
-        selectionScreen,
     }
 
 })()
@@ -152,16 +155,23 @@ const Gameboard = (function() {
 
     }
 
-    function aiGameplay() {
-        if (SelectionScreen.player2.isAi && SelectionScreen.player2.turn) {
-            const emptySquares = Array.from(squares).filter(square => {
-                if (!square.textContent) return true;
-            })
-            const randomIndex = Math.floor(Math.random() * emptySquares.length);
-            setTimeout(function() {
-                emptySquares[randomIndex].click();
-            }, 300);
+    function closeOutcomeScreen() {
+        const outcomeScreen = document.querySelector(".outcome-bg")
+        outcomeScreen.style.display = "none";
+    }
 
+    function aiGameplay() {
+        if (!SelectionScreen.player1.won && !SelectionScreen.player2.won) {
+            if (SelectionScreen.player2.isAi && SelectionScreen.player2.turn) {
+                const emptySquares = Array.from(squares).filter(square => {
+                    if (!square.textContent) return true;
+                })
+                const randomIndex = Math.floor(Math.random() * emptySquares.length);
+                setTimeout(function() {
+                    emptySquares[randomIndex].click();
+                }, 300);
+    
+            }
         }
     }
 
@@ -172,25 +182,46 @@ const Gameboard = (function() {
         renderBoard();
     }
 
+    function resetPlayers() {
+        SelectionScreen.player1.isAi = false;
+        SelectionScreen.player1.turn = true;
+        SelectionScreen.player1.won = false;
+
+        SelectionScreen.player2.isAi = false;
+        SelectionScreen.player2.turn = false;
+        SelectionScreen.player2.won = false;
+    }
+
+    function switchScreens() {
+        const selectionScreen = document.querySelector(".selection-screen");
+        selectionScreen.style.opacity = "1";
+        selectionScreen.style.display = "flex";
+    
+        const container = document.querySelector(".container");
+        container.style.display = "none";
+    }
+
     function newGame() {
-        
+        closeOutcomeScreen()
+        switchScreens();
+        resetPlayers();
+        resetBoard();
     }
 
     return {
         renderBoard,
         addListeners,
         resetBoard,
+        newGame
     }
 })();
 
-const DisplayController = (function() {
+const Resets = (function() {
     const restartButton = document.querySelector(".restart");
     restartButton.addEventListener("click", Gameboard.resetBoard);
 
     const newGameButton = document.querySelector(".new-game");
-    newGameButton.addEventListener("click", function() {
-        window.location.reload();
-    })
+    newGameButton.addEventListener("click", Gameboard.newGame);
 })()
 
 Gameboard.renderBoard();
