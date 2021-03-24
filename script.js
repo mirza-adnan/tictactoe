@@ -65,6 +65,12 @@ const Gameboard = (function() {
         element.removeEventListener("click", main);
     }
 
+    function removeAllListeners() {
+        squares.forEach(square => {
+            square.removeEventListener("click", main);
+        })
+    }
+
     function renderBoard() {
         for(let i=0; i<9; i++) {
             squares[i].textContent = board[i];
@@ -143,6 +149,8 @@ const Gameboard = (function() {
     
     function resetBoard() {
         board = ["", "", "", "", "", "", "", "", ""];
+        removeAllListeners();
+        addListeners();
         renderBoard();
     }
 
@@ -167,7 +175,9 @@ const Gameboard = (function() {
 })();
 
 const DisplayController = (function() {
-
+    const restartButton = document.querySelector(".restart");
+    restartButton.addEventListener("click", Gameboard.resetBoard);
+    
 })()
 
 Gameboard.renderBoard();
