@@ -95,7 +95,7 @@ const Gameboard = (function() {
         changeOpacity(this);
         changeTurns();
         checkWinner();
-        declareResult();
+        showResult();
         aiGameplay();
         removeListener(this);
     }
@@ -131,20 +131,24 @@ const Gameboard = (function() {
         }
     }
 
-    function declareResult() {
-                if (SelectionScreen.player1.won) {
-                    setTimeout(function() {
-                        alert(`${SelectionScreen.player1.player} is the Winner`);
-                    }, 400)
-                } else if (SelectionScreen.player2.won) {
-                    setTimeout(function() {
-                        alert(`${SelectionScreen.player2.player} is the Winner`);
-                    }, 400)
-                } else if (checkTie()) {
-                    setTimeout(function() {
-                        alert("It's a tie")
-                    }, 400)
-                }
+    function showResult() {
+        if (SelectionScreen.player1.won) {
+            showOutcomeScreen(`${SelectionScreen.player1.player} Wins`)
+        } else if (SelectionScreen.player2.won) {
+            showOutcomeScreen(`${SelectionScreen.player2.player} Wins`)
+        } else if (checkTie()) {
+            showOutcomeScreen("It's a Tie")
+        }
+    }
+
+    function showOutcomeScreen(string) {
+        const outcomeScreen = document.querySelector(".outcome-bg")
+        const outcomeText = outcomeScreen.querySelector("h2");
+        outcomeText.textContent = string;
+        setTimeout(function() {
+            outcomeScreen.style.display = "flex";
+        }, 350);
+
     }
     
     function resetBoard() {
@@ -177,7 +181,11 @@ const Gameboard = (function() {
 const DisplayController = (function() {
     const restartButton = document.querySelector(".restart");
     restartButton.addEventListener("click", Gameboard.resetBoard);
-    
+
+    const newGameButton = document.querySelector(".new-game");
+    newGameButton.addEventListener("click", function() {
+        window.location.reload();
+    })
 })()
 
 Gameboard.renderBoard();
