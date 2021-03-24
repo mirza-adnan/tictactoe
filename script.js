@@ -20,6 +20,7 @@ const SelectionScreen = (function() {
 
     human.addEventListener("click", closeSelectionScreen);
     computer.addEventListener("click", function() {
+        player2.player = "Computer";
         player2.isAi = true;
         closeSelectionScreen();
     })
@@ -55,6 +56,9 @@ const Gameboard = (function() {
         })
     }
     
+    function removeListener(element) {
+        element.removeEventListener("click", updateBoard);
+    }
 
     function renderBoard() {
         for(let i=0; i<9; i++) {
@@ -74,8 +78,8 @@ const Gameboard = (function() {
         changeOpacity(this);
         removeListener(this);
         changeTurns();
-        determineWinner();
-        declareWinner();
+        checkWinner();
+        declareResult();
     }
 
     // toggles the turn of each player
@@ -88,7 +92,7 @@ const Gameboard = (function() {
         element.style.color = "rgba(232, 90, 79, 1)"  // increasing the alpha value from 0 to 1 to make it appear slowly
     }
 
-    function determineWinner() {
+    function checkWinner() {
         const winCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
         
         for (let i=0; i < winCombinations.length; i++) {
@@ -101,22 +105,35 @@ const Gameboard = (function() {
         }
     }
 
-    function declareWinner() {
+    function checkTie() {
+        if (!SelectionScreen.player1.won || !SelectionScreen.player2.won) {
+            const isTie = board.every(square => {
+                if (square) return true;
+            })
+            return isTie;
+        }
+    }
+
+    function declareResult() {
                 if (SelectionScreen.player1.won) {
                     setTimeout(function() {
-                        alert("Player 1 is the Winner")
+                        alert(`${SelectionScreen.player1.player} is the Winner`);
                     }, 400)
-                }
-                if (SelectionScreen.player2.won) {
+                } else if (SelectionScreen.player2.won) {
                     setTimeout(function() {
-                        alert("Player 2 is the Winner")
+                        alert(`${SelectionScreen.player2.player} is the Winner`);
+                    }, 400)
+                } else if (checkTie()) {
+                    setTimeout(function() {
+                        alert("It's a tie")
                     }, 400)
                 }
     }
-
-    function removeListener(element) {
-        element.removeEventListener("click", updateBoard);
-    } 
+    
+    function resetBoard() {
+        board = ["", "", "", "", "", "", "", "", ""];
+        renderBoard();
+    }
 
     return {
         renderBoard,
@@ -125,7 +142,6 @@ const Gameboard = (function() {
 })();
 
 const Controller = (function() {
-
 })()
 
 Gameboard.renderBoard();
