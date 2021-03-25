@@ -187,9 +187,15 @@ const Gameboard = (function () {
 
   function resetBoard() {
     board = ["", "", "", "", "", "", "", "", ""];
+    resetTurnText();
     removeAllListeners();
     addListeners();
     renderBoard();
+  }
+
+  function resetTurnText() {
+    const turnText = document.querySelector(".turn");
+    turnText.textContent = "It's Player 1's Turn";
   }
 
   function resetPlayers() {
@@ -215,6 +221,7 @@ const Gameboard = (function () {
     closeOutcomeScreen();
     switchScreens();
     resetPlayers();
+    resetTurnText();
     resetBoard();
   }
 
