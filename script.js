@@ -161,9 +161,7 @@ const Gameboard = (function () {
     const outcomeScreen = document.querySelector(".outcome-bg");
     const outcomeText = outcomeScreen.querySelector("h2");
     outcomeText.textContent = string;
-    setTimeout(function () {
-      outcomeScreen.style.display = "flex";
-    }, 350);
+    outcomeScreen.style.display = "flex";
   }
 
   function closeOutcomeScreen() {
